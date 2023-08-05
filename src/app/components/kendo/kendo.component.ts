@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DataBindingDirective, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { SVGIcon, filePdfIcon, fileExcelIcon, clipboardTextIcon, clipboardCodeIcon, clipboardMarkdownIcon, gearIcon } from "@progress/kendo-svg-icons";
-import {apiAdapter} from "../../services/api-adapter";
+import {ApiAdapter} from "../../services/api-adapter";
+import {DataService} from "../../services/data-service";
 import '@progress/kendo-angular-intl/locales/tr/all';
 import {
   ButtonSize,
@@ -37,7 +38,7 @@ export class KendoComponent  implements OnInit{
   sortColumn: string = "id";
   sortWay: number = 1;
 
-  constructor(private apiAdapter: apiAdapter, private router: Router) {
+  constructor(private apiAdapter: ApiAdapter, private  dataservice: DataService, private router: Router) {
   }
 
   public async ngOnInit(): Promise<any> {
@@ -50,7 +51,8 @@ export class KendoComponent  implements OnInit{
       text: "Bildirimi Güncelle",
       svgIcon: clipboardTextIcon,
       click: (): void => {
-        this.router.navigate(["notificationAddEdit"]);
+        this.dataservice.setNotificationEditId(this.mySelection);
+        this.router.navigate(['notificationAddEdit']);
         //this.router.navigateByUrl("/notificationAddEdit");
       },
     },
@@ -75,8 +77,8 @@ export class KendoComponent  implements OnInit{
   async onCellClick (event: any): Promise<void> {
 
     this.mySelection = event.dataItem.id;
-
-    await this.getData();
+    this.dataservice.setNotificationEditId(this.mySelection);
+    this.router.navigate(['notificationAddEdit']);
   }
 
   async pageChange(event: PageChangeEvent): Promise<void> {
@@ -100,5 +102,10 @@ export class KendoComponent  implements OnInit{
     this.gridData = response.data;
 
     this.gridView = this.gridData;
+  }
+
+  setNotificationId() {
+
+    this.dataservice.setNotificationEditId(this.mySelection);
   }
 }

@@ -2,6 +2,8 @@ import {  ChangeDetectionStrategy, Component, EventEmitter,
   Input, OnInit, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import {DataService} from "../../services/data-service";
+
 export interface Medal {
   name: string;
   type: string;
@@ -12,24 +14,25 @@ export interface Medal {
   templateUrl: './notification-add-edit.component.html',
   styleUrls: ['./notification-add-edit.component.scss']
 })
-export class NotificationAddEditComponent {
-  @Input() medal: "";
-  @Output() submitted = new EventEmitter<Medal>();
+export class NotificationAddEditComponent implements OnInit{
+  @Input() id: string = "";
+  @Output() idClick = new EventEmitter<void>();
   form: FormGroup;
-
-  constructor(private fb: FormBuilder) {}
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.form = this.fb.group({
-      name: [''],
-      type: [null],
-      sport: [null],
-    });
+
+    this.id = this.dataService.getNotificationId();
+
+    console.log(this.id);
   }
 
+  getNotificationId() {
+
+    this.id = this.dataService.getNotificationId();
+  }
 
   submit() {
-    this.submitted.emit(this.form.getRawValue());
     this.form.reset();
   }
 }

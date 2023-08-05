@@ -1,14 +1,11 @@
 import {Injectable} from "@angular/core";
 import axios from "axios";
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from "rxjs";
-import { map, tap } from "rxjs/operators";
-import { toODataString, State } from "@progress/kendo-data-query";
 
 @Injectable({
   providedIn: 'root'
 })
-export class apiAdapter {
+export class ApiAdapter {
 
   constructor(private http: HttpClient) {
 

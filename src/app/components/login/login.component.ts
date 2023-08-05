@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {apiAdapter} from "../../services/api-adapter";
+import {ApiAdapter} from "../../services/api-adapter";
 import { Router } from '@angular/router';
 
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit{
   @Output() tokenChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private apiAdapter: apiAdapter) { }
+  constructor(private apiAdapter: ApiAdapter) { }
 
   username: string = "";
   password: string = "";

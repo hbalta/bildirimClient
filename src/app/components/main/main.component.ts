@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {apiAdapter} from "../../services/api-adapter";
+import {ApiAdapter} from "../../services/api-adapter";
 
 @Component({
   selector: 'app-main',
@@ -8,7 +8,7 @@ import {apiAdapter} from "../../services/api-adapter";
 })
 export class MainComponent implements OnInit {
 
-  constructor(private apiAdapter: apiAdapter) { }
+  constructor(private apiAdapter: ApiAdapter) { }
 
   async ngOnInit(): Promise<any> {
 
