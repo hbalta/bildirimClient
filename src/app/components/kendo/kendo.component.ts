@@ -42,7 +42,7 @@ export class KendoComponent  implements OnInit{
 
   public async ngOnInit(): Promise<any> {
 
-    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+    await this.getData();
   }
 
   public data = [
@@ -69,33 +69,33 @@ export class KendoComponent  implements OnInit{
 
     this.sortColumn = event[0].field;
 
-    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+    await this.getData();
   }
 
   async onCellClick (event: any): Promise<void> {
 
     this.mySelection = event.dataItem.id;
 
-    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+    await this.getData();
   }
 
   async pageChange(event: PageChangeEvent): Promise<void> {
 
     this.pageNumber = event.skip
 
-    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+    await this.getData();
   }
 
   async pageSizeChange(event: any): Promise<void> {
 
     this.pageSize = JSON.parse(event);
 
-    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+    await this.getData();
   }
 
-  public async getData(sortColumn: string, sortWay: number, pageNumber: number, pageSize: number) {
+  public async getData() {
 
-    const response = await this.apiAdapter.getNotificationList(sortColumn, sortWay, pageNumber, pageSize);
+    const response = await this.apiAdapter.getNotificationList(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
 
     this.gridData = response.data;
 
