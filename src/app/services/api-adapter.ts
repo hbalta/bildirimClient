@@ -1,6 +1,9 @@
 import {Injectable} from "@angular/core";
 import axios from "axios";
 import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from "rxjs";
+import { map, tap } from "rxjs/operators";
+import { toODataString, State } from "@progress/kendo-data-query";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +14,9 @@ export class apiAdapter {
 
   }
 
-  token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJhN2VjOGU0NjUyOGI1NjFhNDE1YzIiLCJ1c2VybmFtZSI6ImFkbWluIiwidXNlck5hbWVTdXJuYW1lIjoiVGVzdCBVc2VyIiwicGVybWlzc2lvbklkTGlzdCI6WyI3YTRkNTFjMC01NmYyLTQwYWMtOTUxMC0wYWEzZWQxNTdhZmEiLCI2NWMyNmE5MS0zNjU0LTQ4NDAtYjJmYS1jYTM5ZDUzMTUyNWIiLCJmYjcxZTY1YS03ZjU0LTQ3NDYtODI0OC1iOGI0MjNkZTlhNmMiLCI2NWMyNmE5MS0zNjU0LTQ4NDAtYjJmYS1jYTM5ZDUzMTUyNWIiLCJlYjExODc4OC0zZDczLTQ0Y2QtOTFkOS1lYTYwOTg0NzAwMDIiXSwiaWF0IjoxNjkxMTMyOTIwLCJleHAiOjE2OTEyMTkzMjB9.nQsEXPl4VrLstRe0UyM3hpR5SoHIdgY2JB9qI1D6-Gk";
+  token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGJhN2VjOGU0NjUyOGI1NjFhNDE1YzIiLCJ1c2VybmFtZSI6ImFkbWluIiwidXNlck5hbWVTdXJuYW1lIjoiVGVzdCBVc2VyIiwicGVybWlzc2lvbklkTGlzdCI6WyI3YTRkNTFjMC01NmYyLTQwYWMtOTUxMC0wYWEzZWQxNTdhZmEiLCI2NWMyNmE5MS0zNjU0LTQ4NDAtYjJmYS1jYTM5ZDUzMTUyNWIiLCJmYjcxZTY1YS03ZjU0LTQ3NDYtODI0OC1iOGI0MjNkZTlhNmMiLCI2NWMyNmE5MS0zNjU0LTQ4NDAtYjJmYS1jYTM5ZDUzMTUyNWIiLCJlYjExODc4OC0zZDczLTQ0Y2QtOTFkOS1lYTYwOTg0NzAwMDIiXSwiaWF0IjoxNjkxMjI5NzA2LCJleHAiOjE2OTEzMTYxMDZ9.O8q1PckgKM1kdxLpZDUCkGQPPYxsVPnlXbOVBvr8Tg8";
   url: string = "http://127.0.0.1:57101";
+  data: any;
 
   public checkToken(): any {
 
@@ -36,15 +40,15 @@ export class apiAdapter {
 
   }
 
-  public async getNotificationList(): Promise<any> {
+  public async getNotificationList(sortColumn: string, sortWay: number, pageNumber: number, pageSize: number): Promise<any> {
 
       const request = {
 
         action: "getNotificationList",
-        sortColumn: "content",
-        sortWay: 1,
-        pageNumber: 1,
-        pageSize : 10
+        sortColumn: sortColumn,
+        sortWay: sortWay,
+        pageNumber: pageNumber,
+        pageSize : pageSize
       }
 
       return this.send(request);
@@ -52,24 +56,33 @@ export class apiAdapter {
 
   public async send (request: any): Promise<any> {
 
-       /*const config = {
-         headers: {
-           "Content-Type": "application/json; charset=UTF-8",
-           "action": `${request.action}`,
-           "token": `${this.token}`
-         }
-       }
+    // return new Promise<any>((resolve, reject) => {
 
-       try {
-
-          return this.http.post(this.url, request, config);
-
-       } catch (error) {
-
-         console.log(error);
-       }*/
-
-
+    //   const config = {
+    //     headers: {
+    //       "Content-Type": "application/json; charset=UTF-8",
+    //       "action": `${request.action}`,
+    //       "token": `${this.token}`
+    //     }
+    //   }
+    //
+    //   try {
+    //
+    //     this.http.post<any>(this.url, request, config).subscribe((response) => {
+    //
+    //       setTimeout(() => {this.data = response;},200)
+    //
+    //     });
+    //
+    //     console.log(this.data);
+    //      resolve(this.data);
+    //
+    //   } catch (error) {
+    //
+    //     console.log(error);
+    //   }
+    //
+    // })
      const config = {
        headers: {
          "Content-Type": "application/json; charset=UTF-8",

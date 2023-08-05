@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { DataBindingDirective } from "@progress/kendo-angular-grid";
-import { SVGIcon, clipboardIcon, filePdfIcon, fileExcelIcon, clipboardTextIcon, clipboardCodeIcon, clipboardMarkdownIcon, gearIcon } from "@progress/kendo-svg-icons";
-import { process } from "@progress/kendo-data-query";
-import { employees } from "./employees";
-import { images } from "./images";
+import { DataBindingDirective, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { SVGIcon, filePdfIcon, fileExcelIcon, clipboardTextIcon, clipboardCodeIcon, clipboardMarkdownIcon, gearIcon } from "@progress/kendo-svg-icons";
 import {apiAdapter} from "../../services/api-adapter";
 import '@progress/kendo-angular-intl/locales/tr/all';
 import {
@@ -12,14 +9,13 @@ import {
   ButtonFillMode,
   ButtonThemeColor,
 } from "@progress/kendo-angular-buttons";
-import {DropDownButton} from "@progress/kendo-angular-buttons";
+import { Router } from '@angular/router';
 
 export type Option = {
   type: string;
   data: string[];
   default: ButtonSize | ButtonRounded | ButtonFillMode | ButtonThemeColor;
 };
-
 
 @Component({
   selector: 'app-kendo',
@@ -35,78 +31,27 @@ export class KendoComponent  implements OnInit{
   public pdfSVG: SVGIcon = filePdfIcon;
   public excelSVG: SVGIcon = fileExcelIcon;
   public clipboardSVG: SVGIcon = gearIcon;
-  public dropDownColor: string = "blue";
   public themeColor: ButtonThemeColor = "inverse";
+  pageSize: number = 100000;
+  pageNumber: number = 1;
+  sortColumn: string = "id";
+  sortWay: number = 1;
 
-
-  constructor(private apiAdapter: apiAdapter) {
+  constructor(private apiAdapter: apiAdapter, private router: Router) {
   }
 
   public async ngOnInit(): Promise<any> {
 
-    const response = await this.apiAdapter.getNotificationList();
-
-    if(response) {
-
-    }
-
-    this.gridData = response.data;
-
-    this.gridView = this.gridData;
-
-    console.log(this.gridView);
-  }
-
-  public onFilter(input: Event): void {
-
-    const inputValue = (input.target as HTMLInputElement).value;
-
-    this.gridView = process(this.gridData, {
-      filter: {
-        logic: "or",
-        filters: [
-          {
-            field: "subject",
-            operator: "contains",
-            value: inputValue,
-          },
-          {
-            field: "content",
-            operator: "contains",
-            value: inputValue,
-          },
-          {
-            field: "date",
-            operator: "custom",
-            value: inputValue,
-          },
-          {
-            field: "isActive",
-            operator: "contains",
-            value: inputValue,
-          },
-          {
-            field: "isComplete",
-            operator: "contains",
-            value: inputValue,
-          },
-        ],
-      },
-    }).data;
-
-    this.dataBinding.skip = 0;
-  }
-
-  public onPaste() {
-    console.log("Paste");
+    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
   }
 
   public data = [
     {
-      text: "Keep Text Only",
+      text: "Bildirimi Güncelle",
       svgIcon: clipboardTextIcon,
       click: (): void => {
-        console.log("Keep Text Only");
+        this.router.navigate(["notificationAddEdit"]);
+        //this.router.navigateByUrl("/notificationAddEdit");
       },
     },
     {
@@ -115,33 +60,45 @@ export class KendoComponent  implements OnInit{
       click: (): void => {
         console.log("Paste as HTML");
       },
-    },
-    {
-      text: "Paste Markdown",
-      svgIcon: clipboardMarkdownIcon,
-      click: (): void => {
-        console.log("Paste Markdown");
-      },
-    },
-    {
-      text: "Set Default Paste",
-      click: (): void => {
-        console.log("Set Default Paste");
-      },
-    },
+    }
   ];
 
-  public photoURL(dataItem: { img_id: string; gender: string }): string {
-    const code: string = dataItem.img_id + dataItem.gender;
-    const image: { [Key: string]: string } = images;
+  async onSortChange (event: any): Promise<void> {
 
-    return image[code];
+    this.sortWay = event[0].dir === "asc" ? 1 : -1;
+
+    this.sortColumn = event[0].field;
+
+    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
   }
 
-  public flagURL(dataItem: { country: string }): string {
-    const code: string = dataItem.country;
-    const image: { [Key: string]: string } = images;
+  async onCellClick (event: any): Promise<void> {
 
-    return image[code];
+    this.mySelection = event.dataItem.id;
+
+    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+  }
+
+  async pageChange(event: PageChangeEvent): Promise<void> {
+
+    this.pageNumber = event.skip
+
+    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+  }
+
+  async pageSizeChange(event: any): Promise<void> {
+
+    this.pageSize = JSON.parse(event);
+
+    await this.getData(this.sortColumn, this.sortWay, this.pageNumber, this.pageSize);
+  }
+
+  public async getData(sortColumn: string, sortWay: number, pageNumber: number, pageSize: number) {
+
+    const response = await this.apiAdapter.getNotificationList(sortColumn, sortWay, pageNumber, pageSize);
+
+    this.gridData = response.data;
+
+    this.gridView = this.gridData;
   }
 }

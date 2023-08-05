@@ -1,31 +1,37 @@
+
 <kendo-grid
   [kendoGridBinding]="gridView"
   kendoGridSelectBy="id"
   [(selectedKeys)]="mySelection"
-  [pageSize]="10"
+  [pageSize]="pageSize"
   [pageable]="true"
   [sortable]="true"
-  [groupable]="true"
-  [reorderable]="true"
-  [resizable]="true"
-  [height]="800"
-  [columnMenu]="{ filter: true }"
+  (sortChange)="onSortChange($event)"
+  (cellClick)="onCellClick($event)"
+  (pageChange)="pageChange($event)"
 >
   <ng-template kendoGridToolbarTemplate>
     <input
       [style.width.px]="100"
       placeholder="Search in all columns..."
       kendoTextBox
-      (input)="onFilter($event)"
+
     />
+<!--   bu normalde 29. satırda yazıyordu (input)="onFilter($event)"-->
     <kendo-grid-spacer></kendo-grid-spacer>
     <button kendoGridExcelCommand type="button" [svgIcon]="excelSVG">
       Export to Excel
     </button>
     <button kendoGridPDFCommand [svgIcon]="pdfSVG">Export to PDF</button>
+    <select [(ngModel)]="pageSize" (ngModelChange)="pageSizeChange($event)">
+      <option value=5>5</option>
+      <option value=10>10</option>
+      <option value=20>20</option>
+      <option value=50>50</option>
+    </select>
   </ng-template>
   <kendo-grid-checkbox-column
-    [width]="30"
+    [width]="50"
     [headerClass]="{ 'text-center': true }"
     [class]="{ 'text-center': true }"
     [resizable]="false"
