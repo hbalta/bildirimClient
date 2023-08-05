@@ -12,13 +12,21 @@
     <form action="index.html" method="post">
       <table>
         <tr>
-          <td>test</td>
+          <td>Konu</td>
           <td>
-            <textarea></textarea>
+            <kendo-dropdownlist placeholder=""></kendo-dropdownlist>
           </td>
         </tr>
 
         <tr>
+          <td>Mesaj</td>
+          <td>
+            <kendo-textbox placeholder=""></kendo-textbox>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Tarih</td>
           <kendo-datetimepicker [format]="'dd.MM.yyyy HH:mm'"
           ></kendo-datetimepicker>
         </tr>

@@ -2,18 +2,18 @@
   [kendoGridBinding]="gridView"
   kendoGridSelectBy="id"
   [(selectedKeys)]="mySelection"
-  [pageSize]="20"
+  [pageSize]="10"
   [pageable]="true"
   [sortable]="true"
   [groupable]="true"
   [reorderable]="true"
   [resizable]="true"
-  [height]="500"
+  [height]="800"
   [columnMenu]="{ filter: true }"
 >
   <ng-template kendoGridToolbarTemplate>
     <input
-      [style.width.px]="165"
+      [style.width.px]="100"
       placeholder="Search in all columns..."
       kendoTextBox
       (input)="onFilter($event)"
@@ -25,7 +25,7 @@
     <button kendoGridPDFCommand [svgIcon]="pdfSVG">Export to PDF</button>
   </ng-template>
   <kendo-grid-checkbox-column
-    [width]="45"
+    [width]="30"
     [headerClass]="{ 'text-center': true }"
     [class]="{ 'text-center': true }"
     [resizable]="false"
@@ -120,7 +120,7 @@
     [resizable]="false"
     [width]="50"
     [filterable]="false">
-    <ng-template kendoGridCellTemplate class="gear">
+    <ng-template kendoGridCellTemplate>
 <!--      <kendo-splitbutton-->
       <!--        (buttonClick)="onPaste()"-->
       <!--        [data]="data"-->
@@ -128,7 +128,6 @@
       <!--        [fillMode]="fillMode"-->
       <!--      >-->
       <!--      </kendo-splitbutton>-->
-      <div class="gear">
         <kendo-dropdownbutton
           [style.width.px]="10"
           [svgIcon]="clipboardSVG"
@@ -136,7 +135,6 @@
           [themeColor]="themeColor"
         >
         </kendo-dropdownbutton>
-      </div>
 
     </ng-template>
 

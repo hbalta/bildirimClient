@@ -30,6 +30,8 @@ import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { NotificationAddEditComponent } from './components/notification-add-edit/notification-add-edit.component';
 import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+import { LayoutModule } from "@progress/kendo-angular-layout";
 
 
 
@@ -64,7 +66,9 @@ import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
     FormsModule,
     DateInputsModule,
     ButtonsModule,
-    DropDownsModule
+    DropDownsModule,
+    InputsModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -39,17 +39,3 @@
   padding: 0.25rem 0.5rem; /* Add some padding for better appearance */
   border-radius: 0.25rem; /* Add border-radius for rounded corners */
 }
-
-.gear
-{
-  backgorund-color: #12588a;
-}
-
-.example-config {
-  display: flex;
-  justify-content: space-around;
-}
-
-.k-dropdown {
-  background-color: blue;
-}
