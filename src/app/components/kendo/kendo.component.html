@@ -2,18 +2,18 @@
   [kendoGridBinding]="gridView"
   kendoGridSelectBy="id"
   [(selectedKeys)]="mySelection"
-  [pageSize]="20"
+  [pageSize]="10"
   [pageable]="true"
   [sortable]="true"
   [groupable]="true"
   [reorderable]="true"
   [resizable]="true"
-  [height]="500"
+  [height]="800"
   [columnMenu]="{ filter: true }"
 >
   <ng-template kendoGridToolbarTemplate>
     <input
-      [style.width.px]="165"
+      [style.width.px]="100"
       placeholder="Search in all columns..."
       kendoTextBox
       (input)="onFilter($event)"
@@ -25,39 +25,22 @@
     <button kendoGridPDFCommand [svgIcon]="pdfSVG">Export to PDF</button>
   </ng-template>
   <kendo-grid-checkbox-column
-    [width]="45"
+    [width]="30"
     [headerClass]="{ 'text-center': true }"
     [class]="{ 'text-center': true }"
     [resizable]="false"
     [columnMenu]="false"
     [showSelectAll]="true"
   ></kendo-grid-checkbox-column>
-  <kendo-grid-column-group title="Employee" [columnMenu]="false">
-    <kendo-grid-column field="full_name" title="Contact Name" [width]="220">
-      <ng-template kendoGridCellTemplate let-dataItem>
-        <div
-          class="customer-photo"
-          [ngStyle]="{ 'background-image': photoURL(dataItem) }"
-        ></div>
-        <div class="customer-name">{{ dataItem.full_name }}</div>
-      </ng-template>
+    <kendo-grid-column field="subject" title="Contact Name" [width]="220">
     </kendo-grid-column>
-    <kendo-grid-column field="job_title" title="Job Title" [width]="220">
+    <kendo-grid-column field="content" title="Job Title" [width]="220">
     </kendo-grid-column>
+  <kendo-grid-column field="topic" title="Contact Name" [width]="220">
+  </kendo-grid-column>
     <kendo-grid-column
-      field="country"
-      title="Country"
-      [width]="100"
-      [class]="{ 'text-center': true }"
-      [resizable]="false"
-    >
-      <ng-template kendoGridCellTemplate let-dataItem>
-        <img class="flag" [src]="flagURL(dataItem)" [width]="30" />
-      </ng-template>
-    </kendo-grid-column>
-    <kendo-grid-column
-      field="is_online"
-      title="Status"
+      field="isActive"
+      title="Aktiflik"
       [width]="100"
       [class]="{ 'text-center': true }"
       [resizable]="false"
@@ -65,28 +48,15 @@
     >
       <ng-template kendoGridCellTemplate let-dataItem>
             <span
-              *ngIf="dataItem.is_online === true"
+              *ngIf="dataItem.isActive === true"
               class="badge badge-success"
-            >Online</span
+            >✓</span
             >
         <span
-          *ngIf="dataItem.is_online === false"
+          *ngIf="dataItem.isActive === false"
           class="badge badge-danger"
-        >Offline</span
+        >X </span
         >
-      </ng-template>
-    </kendo-grid-column>
-  </kendo-grid-column-group>
-  <kendo-grid-column-group title="Performance" [columnMenu]="false">
-    <kendo-grid-column
-      field="rating"
-      title="Rating"
-      [width]="110"
-      [resizable]="false"
-      filter="numeric"
-    >
-      <ng-template kendoGridCellTemplate let-dataItem>
-        <kendo-rating [value]="dataItem.rating" [max]="5"></kendo-rating>
       </ng-template>
     </kendo-grid-column>
     <kendo-grid-column
@@ -114,29 +84,65 @@
         </kendo-sparkline>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column
-      field="budget"
-      title="Budget"
-      [width]="100"
-      filter="numeric"
-    >
-      <ng-template kendoGridCellTemplate let-dataItem>
-            <span [ngClass]="{ 'red text-bold': dataItem.budget < 0 }">{{
-              dataItem.budget | currency
-              }}</span>
-      </ng-template>
-    </kendo-grid-column>
-  </kendo-grid-column-group>
-  <kendo-grid-column-group title="Contacts" [columnMenu]="false">
+  <kendo-grid-column
+    field="isComplete"
+    title="Hepsi Gönderildi"
+    [width]="100"
+    [class]="{ 'text-center': true }"
+    [resizable]="false"
+    filter="boolean"
+  >
+    <ng-template kendoGridCellTemplate let-dataItem>
+            <span
+              *ngIf="dataItem.isComplete === true"
+              class="badge badge-success"
+            >✓</span
+            >
+      <span
+        *ngIf="dataItem.isComplete === false"
+        class="badge badge-danger"
+      >X </span
+      >
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="date" title="Tarih" [width]="130">
+    <ng-template kendoGridCellTemplate let-dataItem>
+
+      {{dataItem.date | date: "dd/MM/yyyy HH:mm"}}
+    </ng-template>
+  </kendo-grid-column>
     <kendo-grid-column field="phone" title="Phone" [width]="130">
     </kendo-grid-column>
     <kendo-grid-column field="address" title="Address" [width]="200">
     </kendo-grid-column>
-  </kendo-grid-column-group>
+
+  <kendo-grid-column
+    [resizable]="false"
+    [width]="50"
+    [filterable]="false">
+    <ng-template kendoGridCellTemplate>
+<!--      <kendo-splitbutton-->
+      <!--        (buttonClick)="onPaste()"-->
+      <!--        [data]="data"-->
+      <!--        [svgIcon]="clipboardSVG"-->
+      <!--        [fillMode]="fillMode"-->
+      <!--      >-->
+      <!--      </kendo-splitbutton>-->
+        <kendo-dropdownbutton
+          [style.width.px]="10"
+          [svgIcon]="clipboardSVG"
+          [data]="data"
+          [themeColor]="themeColor"
+        >
+        </kendo-dropdownbutton>
+
+    </ng-template>
+
+  </kendo-grid-column>
 
   <kendo-grid-pdf
-    fileName="Employees.pdf"
+    fileName="Notification.pdf"
     [repeatHeaders]="true"
   ></kendo-grid-pdf>
-  <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+  <kendo-grid-excel fileName="Notification.xlsx"></kendo-grid-excel>
 </kendo-grid>

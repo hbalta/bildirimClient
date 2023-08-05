@@ -1,1 +1,9 @@
-<app-middle></app-middle>
+<div *ngIf="!isLogin">
+  <app-login (tokenChanged)="onTokenChange($event)"></app-login>
+</div>
+
+<div *ngIf="isLogin">
+  <app-middle></app-middle>
+</div>
+
+

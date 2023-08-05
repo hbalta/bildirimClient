@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +23,16 @@ import {
   ExcelModule,
 } from "@progress/kendo-angular-grid";
 import { RatingComponent } from './components/rating/rating.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { NotificationAddEditComponent } from './components/notification-add-edit/notification-add-edit.component';
+import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+import { LayoutModule } from "@progress/kendo-angular-layout";
+
 
 
 @NgModule({
@@ -37,7 +48,9 @@ import { RatingComponent } from './components/rating/rating.component';
     TopWidgetsComponent,
     MiddleComponent,
     KendoComponent,
-    RatingComponent
+    RatingComponent,
+    LoginComponent,
+    NotificationAddEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +60,15 @@ import { RatingComponent } from './components/rating/rating.component';
     SparklineModule,
     GridModule,
     PDFModule,
-    ExcelModule
+    ExcelModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    DateInputsModule,
+    ButtonsModule,
+    DropDownsModule,
+    InputsModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

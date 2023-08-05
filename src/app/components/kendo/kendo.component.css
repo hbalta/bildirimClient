@@ -25,3 +25,17 @@
 .text-bold {
   font-weight: 600;
 }
+/* Custom CSS for badge-success */
+.badge-success {
+  background-color: #28a745; /* Green color for success */
+  color: #fff; /* Text color to be visible on the green background */
+  padding: 0.25rem 0.5rem; /* Add some padding for better appearance */
+  border-radius: 0.25rem; /* Add border-radius for rounded corners */
+}
+
+.badge-danger {
+  background-color: #bd2525; /* Green color for success */
+  color: #fff; /* Text color to be visible on the green background */
+  padding: 0.25rem 0.5rem; /* Add some padding for better appearance */
+  border-radius: 0.25rem; /* Add border-radius for rounded corners */
+}

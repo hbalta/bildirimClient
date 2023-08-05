@@ -1,0 +1,45 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Form</title>
+  <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+  <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <form action="index.html" method="post">
+      <table>
+        <tr>
+          <td>Konu</td>
+          <td>
+            <kendo-dropdownlist placeholder=""></kendo-dropdownlist>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Mesaj</td>
+          <td>
+            <kendo-textbox placeholder=""></kendo-textbox>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Tarih</td>
+          <kendo-datetimepicker [format]="'dd.MM.yyyy HH:mm'"
+          ></kendo-datetimepicker>
+        </tr>
+      </table>
+
+      <h1> Sign Up </h1>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
