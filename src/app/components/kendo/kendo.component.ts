@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DataBindingDirective, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { SVGIcon, filePdfIcon, fileExcelIcon, clipboardTextIcon, clipboardCodeIcon, clipboardMarkdownIcon, gearIcon } from "@progress/kendo-svg-icons";
+import { SVGIcon, filePdfIcon, fileExcelIcon, clipboardTextIcon, clipboardCodeIcon, clipboardMarkdownIcon, gearIcon, plusIcon, minusIcon } from "@progress/kendo-svg-icons";
 import {ApiAdapter} from "../../services/api-adapter";
 import {DataService} from "../../services/data-service";
 import '@progress/kendo-angular-intl/locales/tr/all';
@@ -11,6 +11,8 @@ import {
   ButtonThemeColor,
 } from "@progress/kendo-angular-buttons";
 import { Router } from '@angular/router';
+import {faBell, faPlus} from "@fortawesome/free-solid-svg-icons";
+
 
 export type Option = {
   type: string;
@@ -28,17 +30,31 @@ export class KendoComponent  implements OnInit{
   public gridData: unknown[];
   public gridView: unknown[];
 
+  //mySelection tıkladığım hücrenin id' sini verir bunuda kendo grid parametrelerinden ayarlanabilir.
   public mySelection: string[] = [];
   public pdfSVG: SVGIcon = filePdfIcon;
   public excelSVG: SVGIcon = fileExcelIcon;
   public clipboardSVG: SVGIcon = gearIcon;
   public themeColor: ButtonThemeColor = "inverse";
+  public addSVG: SVGIcon = plusIcon;
   pageSize: number = 100000;
   pageNumber: number = 1;
   sortColumn: string = "id";
   sortWay: number = 1;
+  content:string | DocumentFragment = 'İçerik'
+  addNotificaiton: string = "Bildirimi Güncelle";
+  deleteNotification: string = "Bildirimi Sil";
+  faPlus = faPlus;
 
-  constructor(private apiAdapter: ApiAdapter, private  dataservice: DataService, private router: Router) {
+  notificaitonTitle: object = {
+
+    content: 'İçerik',
+    subject: "Konu",
+    topic: "konu",
+    isActive: "Aktiflik"
+  }
+
+  constructor(private apiAdapter: ApiAdapter, private  dataService: DataService, private router: Router) {
   }
 
   public async ngOnInit(): Promise<any> {
@@ -48,19 +64,21 @@ export class KendoComponent  implements OnInit{
 
   public data = [
     {
-      text: "Bildirimi Güncelle",
-      svgIcon: clipboardTextIcon,
+      text: this.addNotificaiton,
+      svgIcon: plusIcon,
       click: (): void => {
-        this.dataservice.setNotificationEditId(this.mySelection);
+        this.dataService.setNotificationEditId(this.mySelection);
         this.router.navigate(['notificationAddEdit']);
         //this.router.navigateByUrl("/notificationAddEdit");
       },
     },
     {
-      text: "Paste as HTML",
-      svgIcon: clipboardCodeIcon,
-      click: (): void => {
-        console.log("Paste as HTML");
+      text: this.deleteNotification,
+      svgIcon: minusIcon,
+      click: async (): Promise<void> => {
+        console.log(this.mySelection);
+        await this.apiAdapter.deleteNotificationById(this.mySelection);
+        await this.getData();
       },
     }
   ];
@@ -77,7 +95,7 @@ export class KendoComponent  implements OnInit{
   async onCellClick (event: any): Promise<void> {
 
     this.mySelection = event.dataItem.id;
-    this.dataservice.setNotificationEditId(this.mySelection);
+    this.dataService.setNotificationEditId(this.mySelection);
     this.router.navigate(['notificationAddEdit']);
   }
 
@@ -106,6 +124,16 @@ export class KendoComponent  implements OnInit{
 
   setNotificationId() {
 
-    this.dataservice.setNotificationEditId(this.mySelection);
+    this.dataService.setNotificationEditId(this.mySelection);
+  }
+
+  setNotificationIdByDropDown(id: any): void {
+
+    this.mySelection = id;
+  }
+
+  openAddNotificationCompanent() {
+
+    this.router.navigate(['notificationAddEdit'])
   }
 }

@@ -10,30 +10,48 @@
 <div class="row">
   <div class="col-md-12">
     <form action="index.html" method="post">
+      <header>{{header}}</header>
       <table>
         <tr>
           <td>Konu</td>
           <td>
-            <kendo-dropdownlist placeholder=""></kendo-dropdownlist>
+            <kendo-textbox [(ngModel)]="subject" [ngModelOptions]="{ standalone: true }"></kendo-textbox>
           </td>
         </tr>
 
         <tr>
-          <td>Mesaj</td>
+          <td>İçerik</td>
           <td>
-            <kendo-textbox placeholder=""></kendo-textbox>
+            <kendo-textbox [(ngModel)]="content" [ngModelOptions]="{ standalone: true }"></kendo-textbox>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Başlık</td>
+          <td>
+            <select [(ngModel)]="topic" (ngModelChange)="selectedDescriptionChange($event)" [ngModelOptions]="{ standalone: true }">
+              <option value=Duyuru>Duyuru</option>
+              <option value=Haberler>Haberler</option>
+              <option value=Proje>Proje</option>
+              <option value=Etkinlik>Etkinlik</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Aktiflik</td>
+          <td>
+            <input type="checkbox" [(ngModel)]="isActive" [ngModelOptions]="{ standalone: true }">
           </td>
         </tr>
 
         <tr>
           <td>Tarih</td>
-          <kendo-datetimepicker [format]="'dd.MM.yyyy HH:mm'"
+          <kendo-datetimepicker [format]="'dd.MM.yyyy HH:mm'" [(ngModel)]="date" [ngModelOptions]="{ standalone: true }"
           ></kendo-datetimepicker>
         </tr>
       </table>
-
-      <h1> Sign Up </h1>
-      <button type="submit">Sign Up</button>
+      <kendo-button type=button (click)="save()">{{saveValue}}</kendo-button>
     </form>
   </div>
 </div>

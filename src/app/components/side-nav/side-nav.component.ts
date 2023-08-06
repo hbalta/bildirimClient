@@ -8,6 +8,7 @@ import {
   faChartBar,
   faContactBook,
   faHand,
+  faBell
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -25,6 +26,7 @@ export class SideNavComponent implements OnInit {
   faChartBar = faChartBar;
   faContactBook = faContactBook;
   faHand = faHand;
+  faBell = faBell;
 
   constructor() { }
 

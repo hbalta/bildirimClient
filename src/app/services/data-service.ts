@@ -5,15 +5,15 @@ import {Injectable} from "@angular/core";
 })
 export class DataService {
 
-  id: any;
+  notificationId: any;
 
   setNotificationEditId (id: any) {
 
-    this.id = id;
+    this.notificationId = id;
   }
 
   getNotificationId() {
 
-    return this.id;
+    return this.notificationId;
   }
 }
