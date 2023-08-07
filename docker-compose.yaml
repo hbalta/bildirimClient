@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+
+  angular:
+    build:
+      context: ./
+      dockerfile: ./.docker/images/angular/Dockerfile
+    restart: on-failure
+    ports:
+      - "4200:4200"
+
+  nginx:
+    image: nginx
+    build: ./.docker/images/nginx/
+    volumes:
+      - ./src/presentation/web:/etc/web
+      - ./.docker/bridge_ftp:/home/bridge_ftp/www
+      - ./.docker/file-storage://home/bridge/file-storage
+    environment:
+      NGINX_HOST: '0.0.0.0'
+      NGINX_PORT: 80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "yaverlocal.aphel.com.tr:127.0.0.1"
+      - "yaverlocalapi.aphel.com.tr:127.0.0.1"
+    ports:
+      - 443:443
+    restart: on-failure

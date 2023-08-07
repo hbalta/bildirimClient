@@ -12,7 +12,7 @@ export class AppComponent implements OnInit{
   constructor() {
   }
 
-  isLogin: boolean = true;
+  isLogin: boolean = false;
   ngOnInit() {
 
   }
@@ -21,7 +21,4 @@ export class AppComponent implements OnInit{
 
     this.isLogin = true;
   }
-
-
-  title = 'AT';
 }
